@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax with PHP</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h2 style="text-align: center;" >Ajax with php</h2>
+    <form id="form1" style="text-align: center;">
+        NAME: 
+        <input type="text" name="name" id="name" style="margin: 20px;"><br>
+        Mobile: <input type="text" name="" id="tel"><br>
+
+        <input type="submit" value="submit">
+    </form>
+
+    <ul id="id1">
+
+    </ul>
+
+    <script>
+        $(document).ready(function(){
+            $('#form1').submit(function(e){
+                e.preventDefault();
+                var value=$('#name').val();
+                var tel=$('#tel').val();
+
+                /* value='name='+value; */
+                $.ajax({
+                    type: 'POST',
+                    url: 'process.php',
+                    data: {name: value,tele:tel},
+/*                     success: function(data){
+                        var a=`<li>${data}</li>`;
+                        $('#id1').html(a);
+                    } */
+
+/*                     success: function(data){
+                        if(data=='empty'){
+                            alert('The input feild cant be empty');
+                        }else{
+                            var a=`<li>${data}</li>`;
+                            $('#id1').append(a);
+                        }
+                        
+                        
+                    }, */
+                    error: function(){
+                        alert('there was an error');
+                    }
+
+                })
+                $('#name').val('');
+            });
+/*             $.ajax({
+                type: 'GET',
+                url:'get_list.php',
+                success: function(data){
+                    //console.log(data);
+
+                    var a=JSON.parse(data);
+                    var output='';
+
+                    for(var i in a){
+                        output+=`<li>Name: ${a[i].name} Phone: ${a[i].mobile}</li>`;
+                    }
+                    $('#id1').html(output);
+
+                }
+            }) */
+
+            // auto refresh
+            setInterval(auto,1000);
+            function auto(){
+                $.ajax({
+                type: 'GET',
+                url:'get_list.php',
+                success: function(data){
+                    //console.log(data);
+
+                    var a=JSON.parse(data);
+                    var output='';
+
+                    for(var i in a){
+                        output+=`<li>Name: ${a[i].name} Phone: ${a[i].mobile}</li>`;
+                    }
+                    $('#id1').html(output);
+
+                }
+            })}
+        })
+    </script>
+</body>
+</html>
